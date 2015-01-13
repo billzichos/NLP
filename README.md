@@ -8,6 +8,7 @@ I use this repository to store apps that help in the processing of natural langu
 * Word Count
 * Sentence Count
 * Lexical Diversity
+* Misspellings Search
 
 ## Text Classification
 The first generation of my text classification will be used to classify whether or not a text request for a free pizza is compelling enough for someone to fulfill.
