@@ -1,10 +1,11 @@
 import json
 import nltk
 from nltk.probability import FreqDist
+import re
 
 print('Begin loading training data...')
 
-filepath = 'C:\\Users\\Bill\\SkyDrive\\Documents\\Kaggle\\Random Acts of Pizza\\train.json\\train.json'
+filepath = 'C:\\Users\\Bill\\Documents\\GitHub\\Project-Files\\Kaggle - Random Acts of Pizza Train.json'
 
 json_data = open(filepath)
 
@@ -12,15 +13,46 @@ data = json.load(json_data)
 
 print('...Complete - Training data has been loaded successfully.')
 
+def bzSentenceCount(text):
+        return len(nltk.sent_tokenize(text))
+
+def bzWordCount(text):
+        return len(nltk.word_tokenize(text))
+
+def bzLexicalDiversity(text):
+        return len(set([words.lower() for words in nltk.word_tokenize(text)])) / len(nltk.word_tokenize(text))
+
+#def bzHasPictureFlag
+
+#[item['request_id'] for item in data if re.search('.jpg|.png', item['request_text'])]
+
+##def bzPictureSearch(text):
+##        if 1=1:
+##                return "Yes"
+##        else:
+##                return "No"
+
 
 ## Let's capture some attributes about each request.
 print('Begin adding token-based features...')
 
 for item in data:
 	if len(item['request_text'])>0:
-		item['SentCount']=len(nltk.sent_tokenize(item['request_text']))
-		item['WordCount']=len(nltk.word_tokenize(item['request_text']))
-		item['LexicalDiversity']=len(set([words.lower() for words in nltk.word_tokenize(item['request_text'])])) / len(nltk.word_tokenize(item['request_text']))
+		item['SentCount']=bzSentenceCount(item['request_text'])
+		item['WordCount']=bzWordCount(item['request_text'])
+		item['LexicalDiversity']=bzLexicalDiversity(item['request_text'])
+		item['Picture']=item['request_text'].find('.jpg')
+
+picList = [item['request_id'] for item in data if re.search('.jpg|.png', item['request_text'])]
+
+for item in data:
+	if item['request_id'] in picList:
+		item['Picture']=1
+	else:
+		item['Picture']=0
+
+
+# [item['request_text'].find('.jpg') for item in data]
 
 print('...Token-based features (word count, sentence count and lexical diversity) have been added to the dataset.')
 
